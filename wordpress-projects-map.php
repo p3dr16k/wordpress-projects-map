@@ -78,6 +78,8 @@ function add_marker($type)
 	
 	$query_eu = $query_it.' OR taxonomy.description LIKE \'%europa%\'';	
 	
+	$query_tot = $query_eu.' OR taxonomy.description LIKE \'%mondo%\'';	
+	
 	if(strcmp($type, 'italia') === 0)
 	{
 		$query = $query_it;
@@ -88,7 +90,7 @@ function add_marker($type)
 	}
 	else
 	{
-		$query = $query_all;
+		$query = $query_tot;
 	}
 	
 	$results = $wpdb->get_results($query, ARRAY_N);
@@ -117,7 +119,7 @@ function add_marker($type)
 
 function extractCoord($string)
 {
-	$pattern = '/\d+.\d+/';
+	$pattern = '/(-?\d{1,3}\.\d+)/';
 	preg_match_all($pattern, $string, $matches);
 	
 	$result = array();
