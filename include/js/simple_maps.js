@@ -61,9 +61,10 @@ function initialize(myLat, myLon, myZoom, type, showControls, newMinZoom, newMax
 		  center: { lat: myLat, lng: myLon},
 		  zoom: myZoom,
 		  mapTypeId: mapsId[type],
-		  disableDefaultUI: !showControls,
+		  disableDefaultUI: !showControls,		  
 		  minZoom: newMinZoom,
-		  maxZoom: newMaxZoom,
+		  maxZoom: newMaxZoom,		  
+		  scrollwheel: false,
 		  styles: [
 					  {
 						featureType: "all",
@@ -88,6 +89,7 @@ function initialize(myLat, myLon, myZoom, type, showControls, newMinZoom, newMax
 				 
 			};
 		map = new google.maps.Map(document.getElementById('map-container'),	mapOptions);
+		map.setOptions({'scrollwheel':false});
 					
 		map.setTilt(0);
 					
@@ -234,7 +236,16 @@ function drawMarker(myTitle, lat, lon, img, callback)
 				  
 	marker.setAnimation(google.maps.Animation.DROP);
     //Setting the callback
-	google.maps.event.addListener(marker, 'click', callback);				 
+	google.maps.event.addListener(marker, 'click', function(){				
+						if(callback != null)
+						{
+							var loc_splitted = window.location.href.split('/');						
+							loc_splitted[loc_splitted.length - 2] = 'blog/location/';						
+							loc_splitted.push(callback);
+							var url = loc_splitted.toString().replace(/,/g, '/').replace('\/\/\/', '/');
+							window.location.href = url;
+						}
+					});				 
 				 				  
 }
 
@@ -255,7 +266,7 @@ function drawMarkerByLoc(myTitle, loc, img, callback)
 		{
 			if (status == google.maps.GeocoderStatus.OK) 
 			{				
-				//map.setCenter(results[0].geometry.location);
+				map.setCenter(results[0].geometry.location);
 				marker = new google.maps.Marker({
 					map: map,
 					position: results[0].geometry.location,

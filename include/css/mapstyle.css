@@ -15,8 +15,14 @@
 */
 
 /*Map size*/
-#map-container
+.map-container-full
 {
 	width:100%;
 	height:600px;	
+}
+
+.map-container-single
+{
+	width: 240px;
+	height: 240px;	
 }
